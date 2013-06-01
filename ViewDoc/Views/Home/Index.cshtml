@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/cmn/css/bootstrap2.3.1.my.min.css")"/>
+<!-- comment-out the following two lines to rmv responsive -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/cmn/css/bootstrap-responsive2.3.1.min.css")"/>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/cmn/css/perfectify.min.css")"/>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/css/styles.css")"/>
+<title>@ViewBag.Title - Document Viewer</title>
+</head>
+<body>
+<div class="container">
+<div class="row">
+<div class="span4">
+	<div class="sidebar">
+		<div class="sidebar-title">
+			Annotation tree
+		</div>
+		<div class="sidebar-body">
+		</div>
+	</div>
+	<div class="sidebar">
+		<div class="sidebar-title">
+			Document features
+		</div>
+		<div class="sidebar-body">
+		</div>	
+	</div>
+</div>
+<div class="span8">
+	<div class="doc">
+		<h2>@ViewBag.Title</h2>
+		<div id="doc-content"></div>
+	</div>
+</div> <!--span4-->
+</div> <!--row-->
+</div> <!--container-->
+<div id="copyright"><div>&copy; 2013 Sowa Labs</div></div>
+<script type="text/javascript" src="@Url.Content("~/cmn/js/jquery1.9.1.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/cmn/js/jquery.mousestop.my.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/cmn/js/bootstrap2.3.1.my.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/cmn/js/common.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/code.js")"></script>
+<script type="text/javascript">
+    setTreeItems(@Html.Raw(Json.Encode(ViewBag.TreeItemsParam)));
+    setFeatures(@Html.Raw(Json.Encode(ViewBag.FeaturesParam)));
+    setContent(@Html.Raw(Json.Encode(ViewBag.ContentParam)));
+</script>
+</body>
+</html> 
