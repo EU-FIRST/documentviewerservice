@@ -150,7 +150,7 @@ namespace ViewDoc.Controllers
                 if (c != 0) { return c; }
                 return -a.IsSpanStart.CompareTo(b.IsSpanStart);
             });
-            string text = d.Text + "se nekej na koncu";
+            string text = d.Text;
             Dictionary<int, Dictionary<Annotation, int>> state = new Dictionary<int, Dictionary<Annotation, int>>();
             // AddToState
             Action<AnnotationInfo> AddToState = delegate(AnnotationInfo annotInfo) {
@@ -203,6 +203,10 @@ namespace ViewDoc.Controllers
                     cIdx = item.Idx + 1;
                     RemoveFromState(item);
                 }
+            }
+            if (text.Length - cIdx > 0) 
+            { 
+                contentParam.Add(new object[] { text.Substring(cIdx, text.Length - cIdx), EncodeState(state) }); 
             }
             // fill ViewBag
             ViewBag.Title = d.Name;
