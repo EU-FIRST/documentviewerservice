@@ -16,35 +16,46 @@ namespace ViewDoc.Controllers
             public readonly int AnnotationId;
             public readonly bool IsSpanStart;
             public readonly Annotation Annotation;
+            public readonly bool IsLeaf;
 
-            public AnnotationInfo(Annotation a, int id, bool isSpanStart)
+            public AnnotationInfo(Annotation a, int id, bool isSpanStart, bool isLeaf)
             {
                 AnnotationId = id;
                 IsSpanStart = isSpanStart;
                 Idx = isSpanStart ? a.SpanStart : a.SpanEnd;
                 Annotation = a;
+                IsLeaf = isLeaf;
             }
         }
 
-        static object EncodeState(Dictionary<int, Dictionary<Annotation, int>> state)
+        static object EncodeState(Dictionary<int, Set<Annotation>> state)
         {
             ArrayList<object> stateEnc = new ArrayList<object>();
-            foreach (KeyValuePair<int, Dictionary<Annotation, int>> stateItem in state.OrderBy(x => -x.Key))
+            foreach (KeyValuePair<int, Set<Annotation>> stateItem in state.OrderByDescending(x => x.Key))
             {
-                ArrayList<object> featEnc = new ArrayList<object>();
-                foreach (KeyValuePair<Annotation, int> annotInfo in stateItem.Value.OrderBy(x => x.Value))
+                if (stateItem.Value.Sum(x => x.Features.Count()) > 0)
                 {
-                    Annotation annot = annotInfo.Key;
-                    foreach (KeyValuePair<string, string> featInfo in annot.Features)
-                    {
-                        featEnc.AddRange(new string[] { featInfo.Key, ProcessAnnotationFeatureValue(featInfo.Key, featInfo.Value) });
+                    ArrayList<object> featEnc = new ArrayList<object>();
+                    stateEnc.Add(featEnc);
+                    featEnc.Add(stateItem.Key);
+                    int i = 1;
+                    foreach (Annotation annot in stateItem.Value)
+                    {                        
+                        foreach (KeyValuePair<string, string> featInfo in annot.Features)
+                        {
+                            if (stateItem.Value.Count > 1)
+                            {
+                                featEnc.Add("(" + i + ") " + featInfo.Key);
+                            }
+                            else
+                            {
+                                featEnc.Add(featInfo.Key);
+                            }
+                            featEnc.Add(featInfo.Value);                            
+                        }
+                        i++;
                     }
-                }
-                if (featEnc.Count > 0) 
-                {
-                    stateEnc.Add(new ArrayList<object> { stateItem.Key });
-                    ((ArrayList<object>)stateEnc.Last).AddRange(featEnc);
-                }
+                } 
                 else { stateEnc.Add(stateItem.Key); }
             }
             return stateEnc;
@@ -88,6 +99,19 @@ namespace ViewDoc.Controllers
             string fn = @"C:\Work\SowaLabsSnippets\AnnotatedDocXmlToHtml\00_00_37_94e7f5ec8968de6aa3a6893c0dc36203.xml.gz";
             Document d = new Document("", "");
             d.ReadXmlCompressed(fn);
+            foreach (Annotation a in d.Annotations)
+            {
+                if (a.Type == "TextBlock/Content")
+                {
+                    a.Features.SetFeatureValue("test2", "test2");
+                    Annotation an;
+                    d.AddAnnotation(an = new Annotation(a.SpanStart, a.SpanEnd, "TextBlock"));
+                    an.Features.SetFeatureValue("test", "test");
+                    d.AddAnnotation(an = new Annotation(a.SpanStart, a.SpanEnd, "TextBlock"));
+                    an.Features.SetFeatureValue("test", "test3");
+                    break;
+                }
+            }
             ArrayList<AnnotationInfo> data = new ArrayList<AnnotationInfo>();
             Set<string> tabu = new Set<string>();
             ArrayList<Pair<ArrayList<int>, string>> treeItems
@@ -136,12 +160,13 @@ namespace ViewDoc.Controllers
             {
                 string path = "";
                 string[] fullPath = a.Type.Split('/', '\\');
-                foreach (string pathItem in fullPath)
+                for (int i = 0; i < fullPath.Length; i++) 
                 {
-                    path += "/" + pathItem;
+                    path += "/" + fullPath[i];
                     int id = GetId(path);
-                    data.Add(new AnnotationInfo(a, id, /*isSpanStart=*/true));
-                    data.Add(new AnnotationInfo(a, id, /*isSpanStart=*/false));
+                    bool isLeaf = i == fullPath.Length - 1;
+                    data.Add(new AnnotationInfo(a, id, /*isSpanStart=*/true, isLeaf));
+                    data.Add(new AnnotationInfo(a, id, /*isSpanStart=*/false, isLeaf));
                 }
             }
             data.Sort(delegate(AnnotationInfo a, AnnotationInfo b)
@@ -151,30 +176,27 @@ namespace ViewDoc.Controllers
                 return -a.IsSpanStart.CompareTo(b.IsSpanStart);
             });
             string text = d.Text;
-            Dictionary<int, Dictionary<Annotation, int>> state = new Dictionary<int, Dictionary<Annotation, int>>();
+            Dictionary<int, Set<Annotation>> state = new Dictionary<int, Set<Annotation>>();
             // AddToState
             Action<AnnotationInfo> AddToState = delegate(AnnotationInfo annotInfo) {
-                Dictionary<Annotation, int> annots;
-                if (state.TryGetValue(annotInfo.AnnotationId, out annots))
+                Set<Annotation> annots;
+                if (!state.TryGetValue(annotInfo.AnnotationId, out annots))
                 {
-                    annots.Add(annotInfo.Annotation, annotInfo.AnnotationId);
+                    state.Add(annotInfo.AnnotationId, annots = new Set<Annotation>());
                 }
-                else
-                {
-                    state.Add(annotInfo.AnnotationId, new Dictionary<Annotation, int>() { { annotInfo.Annotation, annotInfo.AnnotationId } });
-                }
+                if (annotInfo.IsLeaf) { annots.Add(annotInfo.Annotation); }
             };
             // RemoveFromState
             Action<AnnotationInfo> RemoveFromState = delegate(AnnotationInfo annotInfo) {
-                Dictionary<Annotation, int> annots;
+                Set<Annotation> annots;
                 if (state.TryGetValue(annotInfo.AnnotationId, out annots))
                 {
-                    annots.Remove(annotInfo.Annotation);
+                    if (annotInfo.IsLeaf) { annots.Remove(annotInfo.Annotation); }
                     if (annots.Count == 0)
                     {
                         state.Remove(annotInfo.AnnotationId);
                     }
-                }
+                }                
             };
             ArrayList<object> featuresParam = new ArrayList<object>();
             foreach (KeyValuePair<string, string> f in d.Features)

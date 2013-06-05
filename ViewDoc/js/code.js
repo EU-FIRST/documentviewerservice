@@ -1,6 +1,4 @@
 ﻿// TODO:
-// test feature "inheritance"
-// test two feat. of the same type on top of each other
 // colors (order)
 
 var docData
@@ -10,11 +8,6 @@ var view
 var treeItems
 	= {};
 var popoverAnchor;
-
-//function setTitle(title, docTitle) {
-//    document.title = title;
-//    $(".doc > h2").text(docTitle ? docTitle : title);
-//}
 
 function addTreeItem(level, text, id) {
     var ofs = 3 + level * 20;
@@ -158,6 +151,5 @@ function update(a) {
 
 $(document).ready(function () {
     popoverAnchor = $("<div style='width: 10px; height: 10px; position: absolute; pointer-events: none;'></div>").appendTo("body");
-    // perfectify
     $(document).perfectify(pfy.a);
 });
