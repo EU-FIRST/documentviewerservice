@@ -1,5 +1,14 @@
-﻿// TODO:
-// colors (order)
+﻿/*==========================================================================;
+ *
+ *  (c) Sowa Labs. All rights reserved.
+ *
+ *  File:    code.js
+ *  Desc:    Document viewer client-side code
+ *  Created: Apr-2013
+ *
+ *  Author:  Miha Grcar
+ *
+ ***************************************************************************/
 
 var docData
 	= {};

@@ -1,4 +1,16 @@
-﻿using System;
+﻿/*==========================================================================;
+ *
+ *  (c) Sowa Labs. All rights reserved.
+ *
+ *  File:    HomeController.js
+ *  Desc:    Document viewer controller
+ *  Created: Apr-2013
+ *
+ *  Author:  Miha Grcar
+ *
+ ***************************************************************************/
+
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
@@ -8,23 +20,35 @@ using Latino.Workflows.TextMining;
 
 namespace ViewDoc.Controllers
 {
+    /* .-----------------------------------------------------------------------
+       |
+       |  Class HomeController
+       |
+       '-----------------------------------------------------------------------
+    */
     public class HomeController : Controller
     {
+        /* .-----------------------------------------------------------------------
+           |
+           |  Class AnnotationInfo
+           |
+           '-----------------------------------------------------------------------
+        */
         private class AnnotationInfo
         {
-            public readonly int Idx;
-            public readonly int AnnotationId;
-            public readonly bool IsSpanStart;
-            public readonly Annotation Annotation;
-            public readonly bool IsLeaf;
+            public int mIdx;
+            public int mAnnotationId;
+            public bool mIsSpanStart;
+            public Annotation mAnnotation;
+            public bool mIsLeaf;
 
             public AnnotationInfo(Annotation a, int id, bool isSpanStart, bool isLeaf)
             {
-                AnnotationId = id;
-                IsSpanStart = isSpanStart;
-                Idx = isSpanStart ? a.SpanStart : a.SpanEnd;
-                Annotation = a;
-                IsLeaf = isLeaf;
+                mAnnotationId = id;
+                mIsSpanStart = isSpanStart;
+                mIdx = isSpanStart ? a.SpanStart : a.SpanEnd;
+                mAnnotation = a;
+                mIsLeaf = isLeaf;
             }
         }
 
@@ -63,32 +87,31 @@ namespace ViewDoc.Controllers
 
         static string ProcessDocumentFeatureValue(string name, string val)
         {
-            val = Utils.ToOneLine(val, /*compact=*/true);
+            val = val.ToOneLine(/*compact=*/true);
             if (val.StartsWith("http://") || val.StartsWith("https://"))
             {
                 return string.Format("<a target=\"_blank\" href=\"{0}\">{0}</a>", val, HttpUtility.HtmlEncode(val));
             }
             else if (val.Length > 400)
             {
-                return HttpUtility.HtmlEncode(Utils.Truncate(val, 400)) + "...";
+                return HttpUtility.HtmlEncode(val.Truncate(400)) + "...";
             }
             return HttpUtility.HtmlEncode(val);
         }
 
         static string ProcessAnnotationFeatureValue(string name, string val)
         {
-            val = Utils.ToOneLine(val, /*compact=*/true);
+            val = val.ToOneLine(/*compact=*/true);
             if (val.Length > 100)
             {
-                return HttpUtility.HtmlEncode(Utils.Truncate(val, 400)) + "...";
+                return HttpUtility.HtmlEncode(val.Truncate(400)) + "...";
             }
             return HttpUtility.HtmlEncode(val);
         }
 
         public ActionResult Index()
         {
-            Dictionary<string, int> idMapping
-                = new Dictionary<string, int>();
+            Dictionary<string, int> idMapping = new Dictionary<string, int>();
             // GetId
             Func<string, int> GetId = delegate(string name) {
                 int id;
@@ -99,23 +122,9 @@ namespace ViewDoc.Controllers
             string fn = @"C:\Work\SowaLabsSnippets\AnnotatedDocXmlToHtml\00_00_37_94e7f5ec8968de6aa3a6893c0dc36203.xml.gz";
             Document d = new Document("", "");
             d.ReadXmlCompressed(fn);
-            foreach (Annotation a in d.Annotations)
-            {
-                if (a.Type == "TextBlock/Content")
-                {
-                    a.Features.SetFeatureValue("test2", "test2");
-                    Annotation an;
-                    d.AddAnnotation(an = new Annotation(a.SpanStart, a.SpanEnd, "TextBlock"));
-                    an.Features.SetFeatureValue("test", "test");
-                    d.AddAnnotation(an = new Annotation(a.SpanStart, a.SpanEnd, "TextBlock"));
-                    an.Features.SetFeatureValue("test", "test3");
-                    break;
-                }
-            }
             ArrayList<AnnotationInfo> data = new ArrayList<AnnotationInfo>();
             Set<string> tabu = new Set<string>();
-            ArrayList<Pair<ArrayList<int>, string>> treeItems
-                = new ArrayList<Pair<ArrayList<int>, string>>();
+            ArrayList<Pair<ArrayList<int>, string>> treeItems = new ArrayList<Pair<ArrayList<int>, string>>();
             foreach (Annotation a in d.Annotations)
             {
                 if (!tabu.Contains(a.Type))
@@ -171,30 +180,30 @@ namespace ViewDoc.Controllers
             }
             data.Sort(delegate(AnnotationInfo a, AnnotationInfo b)
             {
-                int c = a.Idx.CompareTo(b.Idx);
+                int c = a.mIdx.CompareTo(b.mIdx);
                 if (c != 0) { return c; }
-                return -a.IsSpanStart.CompareTo(b.IsSpanStart);
+                return -a.mIsSpanStart.CompareTo(b.mIsSpanStart);
             });
             string text = d.Text;
             Dictionary<int, Set<Annotation>> state = new Dictionary<int, Set<Annotation>>();
             // AddToState
             Action<AnnotationInfo> AddToState = delegate(AnnotationInfo annotInfo) {
                 Set<Annotation> annots;
-                if (!state.TryGetValue(annotInfo.AnnotationId, out annots))
+                if (!state.TryGetValue(annotInfo.mAnnotationId, out annots))
                 {
-                    state.Add(annotInfo.AnnotationId, annots = new Set<Annotation>());
+                    state.Add(annotInfo.mAnnotationId, annots = new Set<Annotation>());
                 }
-                if (annotInfo.IsLeaf) { annots.Add(annotInfo.Annotation); }
+                if (annotInfo.mIsLeaf) { annots.Add(annotInfo.mAnnotation); }
             };
             // RemoveFromState
             Action<AnnotationInfo> RemoveFromState = delegate(AnnotationInfo annotInfo) {
                 Set<Annotation> annots;
-                if (state.TryGetValue(annotInfo.AnnotationId, out annots))
+                if (state.TryGetValue(annotInfo.mAnnotationId, out annots))
                 {
-                    if (annotInfo.IsLeaf) { annots.Remove(annotInfo.Annotation); }
+                    if (annotInfo.mIsLeaf) { annots.Remove(annotInfo.mAnnotation); }
                     if (annots.Count == 0)
                     {
-                        state.Remove(annotInfo.AnnotationId);
+                        state.Remove(annotInfo.mAnnotationId);
                     }
                 }                
             };
@@ -211,18 +220,18 @@ namespace ViewDoc.Controllers
             ArrayList<object> contentParam = new ArrayList<object>();
             foreach (AnnotationInfo item in data)
             {
-                if (item.IsSpanStart)
+                if (item.mIsSpanStart)
                 {
-                    string part = text.Substring(cIdx, item.Idx - cIdx);
+                    string part = text.Substring(cIdx, item.mIdx - cIdx);
                     if (part != "") { contentParam.Add(new object[] { part, EncodeState(state) }); }
-                    cIdx = item.Idx;
+                    cIdx = item.mIdx;
                     AddToState(item);
                 }
                 else
                 {
-                    string part = text.Substring(cIdx, item.Idx - cIdx + 1);
+                    string part = text.Substring(cIdx, item.mIdx - cIdx + 1);
                     if (part != "") { contentParam.Add(new object[] { part, EncodeState(state) }); }
-                    cIdx = item.Idx + 1;
+                    cIdx = item.mIdx + 1;
                     RemoveFromState(item);
                 }
             }
