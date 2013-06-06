@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace ViewDoc
+namespace DocumentViewer
 {
     public class FilterConfig
     {
