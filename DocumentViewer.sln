@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewDoc", "ViewDoc\ViewDoc.csproj", "{DC174CDD-341F-4544-B9AA-0563005D305B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentViewer", "ViewDoc\DocumentViewer.csproj", "{DC174CDD-341F-4544-B9AA-0563005D305B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Latino2010", "..\Latino\Latino\Latino2010.csproj", "{5B86AAD5-3FEA-487C-A518-4F846AF09E18}"
 EndProject

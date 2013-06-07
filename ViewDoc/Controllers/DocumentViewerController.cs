@@ -11,6 +11,7 @@
  ***************************************************************************/
 
 using System;
+using System.Text;
 using System.Web.Mvc;
 using Latino;
 using Latino.Workflows.TextMining;
@@ -56,7 +57,6 @@ namespace DocumentViewer.Controllers
                 return false;
             }
             fullFileName = LUtils.GetConfigValue<string>("DataRoot").TrimEnd('\\') + "\\" + fileName;
-            fullFileName = fullFileName.Replace(".html.gz", ".xml.gz"); // bug workaround
             if (!LUtils.VerifyFileNameOpen(fullFileName))
             {
                 ViewBag.ErrorMessage = "Document file name invalid or file not found.";
@@ -67,19 +67,19 @@ namespace DocumentViewer.Controllers
         }
 
         [ActionName("View")]
-        public ActionResult _View(string docId)
+        public ActionResult ViewAction(string docId)
         {
-            string fullFileName;
-            if (!CheckRequest(docId, out fullFileName))
+            string fileName;
+            if (!CheckRequest(docId, out fileName))
             {
                 return View("Error");
             }
-            Document d = new Document("", "");
-            d.ReadXmlCompressed(fullFileName);
+            Document doc = new Document("", "");
+            doc.ReadXmlCompressed(fileName);
             ArrayList<object> treeItems, features, content;
-            DocumentSerializer.SerializeDocument(d, out treeItems, out features, out content);
+            DocumentSerializer.SerializeDocument(doc, out treeItems, out features, out content);
             // fill ViewBag
-            ViewBag.Title = d.Name;
+            ViewBag.Title = doc.Name;
             ViewBag.TreeItemsParam = treeItems;
             ViewBag.FeaturesParam = features;
             ViewBag.ContentParam = content;
@@ -88,16 +88,16 @@ namespace DocumentViewer.Controllers
         }
 
         [ActionName("Redirect")]
-        public ActionResult _Redirect(string docId)
+        public ActionResult RedirectAction(string docId)
         {
-            string fullFileName;
-            if (!CheckRequest(docId, out fullFileName))
+            string fileName;
+            if (!CheckRequest(docId, out fileName))
             {
                 return View("Error");
             }
-            Document d = new Document("", "");
-            d.ReadXmlCompressed(fullFileName);
-            string url = d.Features.GetFeatureValue("responseUrl");
+            Document doc = new Document("", "");
+            doc.ReadXmlCompressed(fileName);
+            string url = doc.Features.GetFeatureValue("responseUrl");
             if (url == null)
             {
                 ViewBag.ErrorMessage = "Document URL not found.";
@@ -109,8 +109,8 @@ namespace DocumentViewer.Controllers
 
         public ActionResult Text(string docId, bool? includeBoilerplate)
         {
-            string fullFileName;
-            if (!CheckRequest(docId, out fullFileName))
+            string fileName;
+            if (!CheckRequest(docId, out fileName))
             {
                 return View("Error");
             }
@@ -118,25 +118,27 @@ namespace DocumentViewer.Controllers
             {
                 includeBoilerplate = false;
             }
-            Document d = new Document("", "");
-            d.ReadXmlCompressed(fullFileName);
-            ViewBag.ErrorMessage = "Not implemented.";
-            ViewBag.Details = "Action name: Text";
-            return View("Error");
+            Document doc = new Document("", "");
+            doc.ReadXmlCompressed(fileName);
+            StringBuilder txt = new StringBuilder();
+            string selector = includeBoilerplate.Value ? "TextBlock" : "TextBlock/Content";
+            foreach (TextBlock textBlock in doc.GetAnnotatedBlocks(selector))
+            {
+                txt.AppendLine(textBlock.Text);
+            }
+            return Content(txt.ToString(), "text/plain");
         }
 
         public ActionResult Xml(string docId)
         {
-            string fullFileName;
-            if (!CheckRequest(docId, out fullFileName))
+            string fileName;
+            if (!CheckRequest(docId, out fileName))
             {
                 return View("Error");
             }
-            Document d = new Document("", "");
-            d.ReadXmlCompressed(fullFileName);
-            ViewBag.ErrorMessage = "Not implemented.";
-            ViewBag.Details = "Action name: Xml";
-            return View("Error");
+            Document doc = new Document("", "");
+            doc.ReadXmlCompressed(fileName);         
+            return Content(doc.GetXml(), "application/xml");
         }
     }
 }

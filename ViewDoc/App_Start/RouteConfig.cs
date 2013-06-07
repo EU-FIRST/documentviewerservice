@@ -12,11 +12,6 @@ namespace DocumentViewer
                 url: "{action}/{docId}",
                 defaults: new { controller = "DocumentViewer", action = "View", docId = UrlParameter.Optional }
             );
-            routes.MapRoute(
-                name: "View",
-                url: "{docId}",
-                defaults: new { controller = "DocumentViewer", action = "View", docId = UrlParameter.Optional }
-            );
         }
     }
 }
