@@ -1,8 +1,19 @@
-﻿using System;
+﻿/*==========================================================================;
+ *
+ *  (c) Sowa Labs. All rights reserved.
+ *
+ *  File:    DocumentSerializer.js
+ *  Desc:    Creates a JSON-serializable representation
+ *  Created: Apr-2013
+ *
+ *  Author:  Miha Grcar
+ *
+ ***************************************************************************/
+
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Web;
-using System.Data.SqlClient;
 using Latino;
 using Latino.Workflows.TextMining;
 

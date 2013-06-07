@@ -4,7 +4,7 @@
  *
  *  File:    Config.js
  *  Desc:    Configuration settings
- *  Created: Apr-2013
+ *  Created: Jun-2013
  *
  *  Author:  Miha Grcar
  *
