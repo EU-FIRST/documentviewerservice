@@ -1,24 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="C:\inetpub\wwwroot\DocumentViewer" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/System.Web.Http.WebHost.dll" publishTime="05/31/2013 20:03:23" />
+    <file relUrl="bin/Latino.dll" publishTime="06/19/2013 13:51:27" />
     <file relUrl="bin/OpenNLP.dll" publishTime="06/06/2013 14:24:55" />
-    <file relUrl="bin/System.Web.Http.xml" publishTime="05/31/2013 20:03:23" />
     <file relUrl="Global.asax" publishTime="06/06/2013 15:26:56" />
+    <file relUrl="js/code.js" publishTime="06/06/2013 09:17:18" />
     <file relUrl="bin/OpenNLP.pdb" publishTime="06/06/2013 14:24:55" />
     <file relUrl="bin/System.Net.Http.WebRequest.xml" publishTime="05/31/2013 20:03:23" />
-    <file relUrl="bin/SharpWordNet.dll" publishTime="06/06/2013 14:24:52" />
-    <file relUrl="js/code.js" publishTime="06/06/2013 09:17:18" />
     <file relUrl="bin/SharpEntropy.pdb" publishTime="06/06/2013 14:24:52" />
-    <file relUrl="bin/Latino.pdb" publishTime="06/06/2013 14:24:54" />
-    <file relUrl="bin/System.Net.Http.xml" publishTime="05/31/2013 20:03:23" />
-    <file relUrl="bin/LatinoWorkflows.pdb" publishTime="06/07/2013 22:50:08" />
+    <file relUrl="bin/System.Web.Http.WebHost.xml" publishTime="05/31/2013 20:03:23" />
+    <file relUrl="bin/Latino.pdb" publishTime="06/19/2013 13:51:27" />
+    <file relUrl="bin/System.Web.Razor.dll" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/LatinoWorkflows.pdb" publishTime="06/20/2013 17:11:09" />
     <file relUrl="bin/System.Net.Http.Formatting.dll" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/SemWeb.pdb" publishTime="06/06/2013 14:24:53" />
+    <file relUrl="bin/System.Web.WebPages.Razor.dll" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/ViewDoc.dll" publishTime="06/21/2013 21:46:26" />
     <file relUrl="bin/SharpWordNet.pdb" publishTime="06/06/2013 14:24:52" />
     <file relUrl="bin/Newtonsoft.Json.xml" publishTime="05/31/2013 20:03:21" />
-    <file relUrl="bin/System.Net.Http.Formatting.xml" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/System.Web.Mvc.dll" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/SemWeb.dll" publishTime="06/06/2013 14:24:53" />
     <file relUrl="bin/System.Web.WebPages.Deployment.xml" publishTime="05/31/2013 20:03:22" />
     <file relUrl="bin/OpenNLP.xml" publishTime="06/06/2013 14:24:55" />
     <file relUrl="bin/System.Web.Helpers.dll" publishTime="05/31/2013 20:03:22" />
@@ -26,28 +25,29 @@
     <file relUrl="packages.config" publishTime="05/31/2013 20:03:24" />
     <file relUrl="bin/System.Web.Mvc.xml" publishTime="05/31/2013 20:03:22" />
     <file relUrl="bin/SharpEntropy.dll" publishTime="06/06/2013 14:24:52" />
-    <file relUrl="bin/System.Web.Razor.xml" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/System.Web.WebPages.Razor.xml" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/System.Web.WebPages.xml" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/System.Web.Http.WebHost.xml" publishTime="05/31/2013 20:03:23" />
-    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="05/31/2013 20:03:21" />
-    <file relUrl="bin/Latino.dll" publishTime="06/06/2013 14:24:54" />
-    <file relUrl="bin/LatinoWorkflows.dll" publishTime="06/07/2013 22:50:08" />
-    <file relUrl="bin/System.Net.Http.dll" publishTime="05/31/2013 20:03:23" />
-    <file relUrl="bin/System.Net.Http.WebRequest.dll" publishTime="05/31/2013 20:03:23" />
     <file relUrl="Views/DocumentViewer/View.cshtml" publishTime="06/06/2013 17:27:26" />
-    <file relUrl="bin/System.Web.Razor.dll" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/System.Web.Helpers.xml" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/System.Web.Razor.xml" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/System.Web.WebPages.xml" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/System.Web.Mvc.dll" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="05/31/2013 20:03:21" />
+    <file relUrl="bin/SemWeb.pdb" publishTime="06/06/2013 14:24:53" />
+    <file relUrl="bin/System.Web.WebPages.Razor.xml" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/LatinoWorkflows.dll" publishTime="06/20/2013 17:11:09" />
+    <file relUrl="bin/System.Net.Http.WebRequest.dll" publishTime="05/31/2013 20:03:23" />
+    <file relUrl="Views/DocumentViewer/Error.cshtml" publishTime="06/06/2013 14:02:12" />
+    <file relUrl="bin/System.Web.Http.xml" publishTime="05/31/2013 20:03:23" />
     <file relUrl="bin/System.Web.WebPages.Deployment.dll" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="bin/ViewDoc.dll" publishTime="06/07/2013 22:57:28" />
-    <file relUrl="css/styles.css" publishTime="06/01/2013 20:54:58" />
+    <file relUrl="bin/System.Web.Http.WebHost.dll" publishTime="05/31/2013 20:03:23" />
+    <file relUrl="bin/System.Net.Http.xml" publishTime="05/31/2013 20:03:23" />
     <file relUrl="bin/Microsoft.Web.Infrastructure.dll" publishTime="05/31/2013 20:03:22" />
     <file relUrl="Web.config" publishTime="06/07/2013 12:02:19" />
-    <file relUrl="bin/ViewDoc.pdb" publishTime="06/07/2013 22:57:27" />
-    <file relUrl="bin/SemWeb.dll" publishTime="06/06/2013 14:24:53" />
+    <file relUrl="bin/ViewDoc.pdb" publishTime="06/21/2013 21:46:26" />
+    <file relUrl="css/styles.css" publishTime="06/01/2013 20:54:58" />
+    <file relUrl="bin/System.Net.Http.Formatting.xml" publishTime="05/31/2013 20:03:22" />
     <file relUrl="bin/System.Web.Http.dll" publishTime="05/31/2013 20:03:23" />
+    <file relUrl="bin/System.Net.Http.dll" publishTime="05/31/2013 20:03:23" />
     <file relUrl="Views/Web.config" publishTime="06/01/2013 10:45:17" />
-    <file relUrl="bin/System.Web.WebPages.Razor.dll" publishTime="05/31/2013 20:03:22" />
-    <file relUrl="Views/DocumentViewer/Error.cshtml" publishTime="06/06/2013 14:02:12" />
+    <file relUrl="bin/System.Web.Helpers.xml" publishTime="05/31/2013 20:03:22" />
+    <file relUrl="bin/SharpWordNet.dll" publishTime="06/06/2013 14:24:52" />
   </publishProfile>
 </publishData>
